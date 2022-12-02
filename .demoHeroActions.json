@@ -1,0 +1,158 @@
+[
+  {
+    "id": "305810",
+    "name": "get missions test",
+    "type": "CodeFragment",
+    "content": "describe('missions api', () => {\n  it('should get missions', () => {\n    cy.api('/missions').as('response');\n    cy.get('@response').its('status').should('equal', 200);\n  });\n});"
+  },
+  {
+    "id": "372671",
+    "name": "getList controller method",
+    "type": "CodeFragment",
+    "content": "@Get()\n  getList() {\n    return [\n      {\n        description: 'save the world',\n        complete: false,\n      },\n    ];\n  }"
+  },
+  {
+    "id": "357096",
+    "name": "initial missionService",
+    "type": "CodeFragment",
+    "content": "import { Injectable } from '@nestjs/common';\n\nexport interface Mission {\n  id?: number;\n  description: string;\n  complete: boolean;\n  created: string;\n}\n\nconst defaultMission: Mission = {\n  id: 1,\n  description: 'save the galaxy',\n  complete: false,\n  created: new Date().toISOString(),\n};\n\n@Injectable()\nexport class MissionsService {\n  missions: Mission[] = [{ ...defaultMission }];\n\n  getList() {\n    return this.missions;\n  }\n}\n"
+  },
+  {
+    "id": "427405",
+    "name": "single mission test",
+    "type": "CodeFragment",
+    "content": "it('should get single mission', () => {\n    cy.api('/missions/1').as('response');\n    cy.get('@response').its('status').should('equal', 200);\n    cy.get('@response').its('body').should('include', {\n      id: 1,\n      description: 'save the galaxy',\n      complete: false,\n    });\n  });"
+  },
+  {
+    "id": "313851",
+    "name": "single mission service",
+    "type": "CodeFragment",
+    "content": "get(id: number) {\n    const mission = this.missions.find((x) => x.id === id);\n    return mission;\n  }"
+  },
+  {
+    "id": "550460",
+    "name": "single mission controller",
+    "type": "CodeFragment",
+    "content": "@Get(':id')\n  get(@Param('id', ParseIntPipe) id: number) {\n    return this.missionsService.get(id);\n  }"
+  },
+  {
+    "id": "338733",
+    "name": "single 404 test",
+    "type": "CodeFragment",
+    "content": "it('should throw 404 if single mission is not found', () => {\n    cy.api({\n      url: '/missions/100',\n      failOnStatusCode: false,\n    }).as('response');\n    cy.get('@response').its('status').should('equal', 404);\n  });"
+  },
+  {
+    "id": "412136",
+    "name": "not found check in get method",
+    "type": "CodeFragment",
+    "content": "if (!mission) {\n      throw new NotFoundException();\n    }"
+  },
+  {
+    "id": "321803",
+    "name": "add mission test",
+    "type": "CodeFragment",
+    "content": "it('can add mission', () => {\n    const mission = {\n      description: 'test mission',\n      complete: false,\n    };\n    cy.api('POST', '/missions', mission).as('response');\n    cy.get('@response').its('status').should('equal', 201);\n    cy.get('@response').its('body').should('include', mission);\n  });"
+  },
+  {
+    "id": "332815",
+    "name": "add method service",
+    "type": "CodeFragment",
+    "content": "add(mission: Mission) {\n    const newId = Math.max(...this.missions.map((x) => x.id)) + 1;\n    mission.id = newId;\n    this.missions.push(mission);\n    return mission;\n  }"
+  },
+  {
+    "id": "436192",
+    "name": "add method controller",
+    "type": "CodeFragment",
+    "content": "@Post()\n  addMission(@Body() mission: Mission) {\n    return this.missionsService.add(mission);\n  }"
+  },
+  {
+    "id": "294147",
+    "name": "update & delete tests",
+    "type": "CodeFragment",
+    "content": "it('should update mission', () => {\n    const mission = {\n      description: 'get cat out of tree',\n      complete: true,\n    };\n    cy.api({\n      url: '/missions/1',\n      method: 'PUT',\n      body: mission,\n    }).as('response');\n    cy.get('@response').its('status').should('equal', 200);\n    cy.get('@response').its('body').should('include', mission);\n  });\n\n  it('can delete mission', () => {\n    cy.api('DELETE', '/missions/1').as('response');\n    cy.get('@response').its('status').should('equal', 204);\n  });"
+  },
+  {
+    "id": "305156",
+    "name": "update & delete service methods",
+    "type": "CodeFragment",
+    "content": "update(id: number, mission: Mission) {\n    mission.id = id;\n    this.missions = this.missions.map((x) => {\n      return x.id === id ? mission : x;\n    });\n    return this.get(id);\n  }\n\n  delete(id: number) {\n    this.missions = this.missions.filter((x) => x.id !== id);\n  }"
+  },
+  {
+    "id": "396755",
+    "name": "update & delete controller methods",
+    "type": "CodeFragment",
+    "content": "@Put(':id')\n  update(@Param('id', ParseIntPipe) id: number, @Body() mission: Mission) {\n    return this.missionsService.update(id, mission);\n  }\n\n  @Delete(':id')\n  @HttpCode(204)\n  delete(@Param('id', ParseIntPipe) id: number) {\n    this.missionsService.delete(id);\n  }"
+  },
+  {
+    "id": "501505",
+    "name": "reset method service",
+    "type": "CodeFragment",
+    "content": "reset() {\n    this.missions = [{ ...defaultMission }];\n  }"
+  },
+  {
+    "id": "544012",
+    "name": "reset method controller",
+    "type": "CodeFragment",
+    "content": "@Post('/reset')\n  reset() {\n    if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'dev') {\n      this.missionsService.reset();\n    }\n  }"
+  },
+  {
+    "id": "371270",
+    "name": "reseed beforeEach hook",
+    "type": "CodeFragment",
+    "content": "beforeEach(() => {\n    cy.request({\n      log: false,\n      method: 'POST',\n      url: '/missions/reset',\n    });\n    cy.log('seeding db');\n  });"
+  },
+  {
+    "id": "471194",
+    "name": "TestEnvOnlyGuard replace class",
+    "type": "CodeFragment",
+    "content": "import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';\nimport { Observable } from 'rxjs';\n\n@Injectable()\nexport class TestEnvOnlyGuard implements CanActivate {\n  canActivate(\n    context: ExecutionContext,\n  ): boolean | Promise<boolean> | Observable<boolean> {\n    const request = context.switchToHttp().getRequest();\n\n    if (!(process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'dev')) {\n      return false;\n    }\n\n    if (request.headers.authorization !== 'resetcreds') {\n      return false;\n    }\n\n    return true;\n  }\n}\n"
+  },
+  {
+    "id": "554332",
+    "name": "add TestEnvOnlyGuard to reset method controller",
+    "type": "CodeFragment",
+    "content": "@UseGuards(TestEnvOnlyGuard)"
+  },
+  {
+    "id": "525979",
+    "name": "invalid mission test",
+    "type": "CodeFragment",
+    "content": "it('when adding an invalid mission, get 400 error', () => {\n    const mission = {};\n    cy.api({\n      method: 'POST',\n      url: '/missions',\n      body: mission,\n      failOnStatusCode: false,\n    }).as('response');\n    cy.get('@response').its('status').should('equal', 400);\n    cy.get('@response')\n      .its('body')\n      .should('deep.include', {\n        message: [\n          'description must not be an empty string',\n          'description must be a string',\n          'complete must be a boolean',\n        ],\n      });\n  });"
+  },
+  {
+    "id": "317289",
+    "name": "Mission Class",
+    "type": "CodeFragment",
+    "content": "export class Mission {\n  id?: number;\n  description: string;\n  complete: boolean;\n  created: string;\n\n  constructor(partial: Partial<Mission>) {\n    Object.assign(this, partial);\n  }\n}"
+  },
+  {
+    "id": "318007",
+    "name": "set new missions array",
+    "type": "CodeFragment",
+    "content": "[new Mission(defaultMission)];"
+  },
+  {
+    "id": "395111",
+    "name": "mission description validators",
+    "type": "CodeFragment",
+    "content": "@IsString({ message: 'description must be a string' })\n  @IsNotEmpty({ message: 'description must not be an empty string' })"
+  },
+  {
+    "id": "448419",
+    "name": "mission complete decorator",
+    "type": "CodeFragment",
+    "content": "@IsBoolean({ message: 'complete must be a boolean' })"
+  },
+  {
+    "id": "501768",
+    "name": "import mission decorators",
+    "type": "CodeFragment",
+    "content": "import { IsString, IsNotEmpty, IsBoolean } from 'class-validator';\n"
+  },
+  {
+    "id": "457118",
+    "name": "check created is undefined in single test",
+    "type": "CodeFragment",
+    "content": "cy.get('@response').its('body.created').should('be.undefined');"
+  }
+]
