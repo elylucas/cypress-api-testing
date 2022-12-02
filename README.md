@@ -1,11 +1,9 @@
-# Workshop
-
-Welcome to the Workshop!
+# Creating an API with NestJS and Cypress
 
 ## Getting Started
 
 To get started, open the guide at
-[https://elylucas.github.io/workshop-starter/](https://elylucas.github.io/workshop-starter/)
+[https://elylucas.github.io/workshop-starter/](https://elylucas.github.io/ngtinyconf-nestjs-cypress/)
 and continue in the Getting Started section.
 
 If you cannot access the above URL, you can view the guide locally by running
