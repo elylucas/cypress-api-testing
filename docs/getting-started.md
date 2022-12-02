@@ -112,7 +112,7 @@ npm run start:dev
 You will likely need to open several command windows or tabs to
 run Cypress and Nest simultaneously. In VS Code, I like to run Nest in a
 [JavaScript Debug
-Terminal(https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_javascript-debug-terminal),
+Terminal](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_javascript-debug-terminal),
 which will attach the debugger to the process automatically.
 
 :::
