@@ -10,7 +10,7 @@ const config = {
   tagline: 'apis are cool',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl:
-    process.env.NODE_ENV === 'production' ? '/ngtinyconf-nestjs-cypress/' : '/',
+    process.env.NODE_ENV === 'production' ? '/cypress-api-testing/' : '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
