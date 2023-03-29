@@ -1,9 +1,9 @@
-# Creating an API with NestJS and Cypress
+# Cypress API Testing
 
 ## Getting Started
 
 To get started, open the guide at
-[https://elylucas.github.io/ngtinyconf-nestjs-cypress/](https://elylucas.github.io/ngtinyconf-nestjs-cypress/)
+[https://elylucas.github.io/cypress-api-testing/](https://elylucas.github.io/cypress-api-testing/)
 and continue in the Getting Started section.
 
 If you cannot access the above URL, you can view the guide locally by running
